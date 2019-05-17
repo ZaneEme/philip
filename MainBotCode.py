@@ -37,7 +37,7 @@ async def quitBot(ctx): #quit the bot
         await ctx.send("You do not have permission to enter this command")
 
 
-@client.command() #toggle the reversal of words
+@client.command(aliases = ["reverse", "reverseWords"]) #toggle the reversal of words
 async def toggleReverseWords(ctx):
     global reverseWords
     reverseWords = not reverseWords
@@ -50,9 +50,9 @@ async def ping(ctx):
 @client.command()
 async def helpMe(ctx):
     embed = discord.Embed(title = "chatBot help", description = "Some useful commands")
-    embed.add_field(name = "!toggleReverseWords", value = "Toggles whether all words will be reversed or not")
+    embed.add_field(name = "!reverse", value = "Toggles word reversal")
     embed.add_field(name = "!ping", value = "Returns the bot's ping to the server")
-    embed.add_field(name = "joke", value = "tells a joke")
+    embed.add_field(name = "!joke", value = "tells a joke")
     await ctx.send(embed = embed)
 
 @client.command(aliases = ["joke", "telljoke"])
@@ -61,18 +61,19 @@ async def tellJoke(ctx):
     "What do you call bears without ears?",
     "Why don't blind people skydive?",
     "As a scarecrow people say I'm outstanding at my job",
-    "What do cannonballs do when they're in love?"
+    "What do cannonballs do when they're in love?",
     "How long is a chinese man's name"]
 
     jokeAnswer = [
     "B",
     "It scares the hell out of their dogs",
     "but hay, its in my jeans",
-    "make bb's"
+    "make bb's",
     "no, really, it is."]
 
     jokeNumber = random.randint(0, len(jokeQuestion) - 1)
     await ctx.send(jokeQuestion[jokeNumber])
     await ctx.send(jokeAnswer[jokeNumber])
+
 
 client.run('NTc4MzY4NTI3NzY2MTI2NjEz.XN15Vw.TbHe8gQ2jGVkxbyqXTC2kiUxiS4')
