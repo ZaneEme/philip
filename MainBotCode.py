@@ -28,10 +28,11 @@ async def on_message(message):
 @client.command()
 async def quitBot(ctx): #quit the bot
     valid_users = ['Zane#9722']
-    await ctx.send("quitting the bot")
-    
     if str(ctx.author) in valid_users:
+        await ctx.send("quitting the bot")
         quit()
+    else:
+        await ctx.send("You do not have permission to enter this command")
 
 
 @client.command() #toggle the reversal of words
@@ -43,6 +44,14 @@ async def toggleReverseWords(ctx):
 @client.command()
 async def ping(ctx):
     await ctx.send(f"Pong! {round(client.latency * 1000)}ms")
+
+@client.command()
+async def help(ctx):
+    embed = discord.Embed(title = "chatBot help", description = "some useful commands")
+    embed.add_field(name = "philicia", value = "tells her I love her <3")
+    embed.add_field(name = "!toggleReverseWords", value = "toggles whether all words will be reversed or not")
+    embed.add_field(name = "!ping", value = "returns the bot's ping to the server")
+    await ctx.send(embed = embed)
 
 
 
