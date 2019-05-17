@@ -46,11 +46,11 @@ async def ping(ctx):
     await ctx.send(f"Pong! {round(client.latency * 1000)}ms")
 
 @client.command()
-async def help(ctx):
-    embed = discord.Embed(title = "chatBot help", description = "some useful commands")
-    embed.add_field(name = "philicia", value = "tells her I love her <3")
-    embed.add_field(name = "!toggleReverseWords", value = "toggles whether all words will be reversed or not")
-    embed.add_field(name = "!ping", value = "returns the bot's ping to the server")
+async def helpMe(ctx):
+    embed = discord.Embed(title = "chatBot help", description = "Some useful commands")
+    embed.add_field(name = "philicia", value = "Tells her I love her <3")
+    embed.add_field(name = "!toggleReverseWords", value = "Toggles whether all words will be reversed or not")
+    embed.add_field(name = "!ping", value = "Returns the bot's ping to the server")
     await ctx.send(embed = embed)
 
 
