@@ -26,7 +26,7 @@ async def on_message(message):
 
     await client.process_commands(message) #end the onMessage loop
 
-@client.command()
+@client.command(aliases = ["quit", "quitbot", "q"])
 async def quitBot(ctx): #quit the bot
     valid_users = ['Zane#9722']
     if str(ctx.author) in valid_users:
@@ -62,18 +62,46 @@ async def tellJoke(ctx):
     "Why don't blind people skydive?",
     "As a scarecrow people say I'm outstanding at my job",
     "What do cannonballs do when they're in love?",
-    "How long is a chinese man's name"]
+    "How long is a chinese man's name",
+    "What do you get when you cross an insomniac, a dislexic, and an agnostic?",
+    "Where does the general keep his armies?"]
 
     jokeAnswer = [
     "B",
     "It scares the hell out of their dogs",
     "but hay, its in my jeans",
     "make bb's",
-    "no, really, it is."]
+    "no, really, it is.",
+    "Someone who lays awake at night wondering of there's a dog",
+    "In his slee"]
 
     jokeNumber = random.randint(0, len(jokeQuestion) - 1)
     await ctx.send(jokeQuestion[jokeNumber])
     await ctx.send(jokeAnswer[jokeNumber])
 
+
+wordList = ["banana", "choclolate", "coffee", "pancakes"]
+guessedChar = 'a'
+tempUnderscoreArray = []
+guessesLeft = 7
+chosenWord = "a"
+
+@client.command(aliases = ["hangman", "Hangman", "HangMan"])
+async def hangMan(ctx):
+
+    def chooseWord():
+        global chosenWord
+        chosenWord = random.choice(wordList)
+        return chosenWord
+
+    def setGameUnderscores():
+        global tempUnderscoreArray; chosenWord
+        for _ in range(0, len(chosenWord)):
+            tempUnderscoreArray.append("--")
+            #TODO: use string instead of list maybe??
+    chooseWord()
+    setGameUnderscores()
+    await ctx.send(chosenWord)
+    await ctx.send(tempUnderscoreArray)
 
 client.run('***REMOVED***')
