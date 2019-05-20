@@ -101,7 +101,9 @@ async def hangMan(ctx):
             #TODO: use string instead of list maybe??
     chooseWord()
     setGameUnderscores()
-    await ctx.send(chosenWord)
-    await ctx.send(tempUnderscoreArray)
+    # await ctx.send(chosenWord)
+    # await ctx.send(tempUnderscoreArray)
+    ctx.send("\nWelcome to Hangman!")
+
 
 client.run('NTc4MzY4NTI3NzY2MTI2NjEz.XN15Vw.TbHe8gQ2jGVkxbyqXTC2kiUxiS4')
