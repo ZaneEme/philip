@@ -13,6 +13,7 @@ wordsMatch = False
 wordContainsChar = False
 
 def chooseRandomFromList(wordList): #choose a random word from the list
+    global chosenWordString
     wordNum = random.randint(0, len(wordList) - 1)
     chosenWordString = words[wordNum] #testing, for some reason doesn't actually work? No idea
     return chosenWordString
@@ -24,7 +25,7 @@ def setTemporaryUnderScoresArray(): #create a list of underscores the same lengt
 
 #Main code area
 
-chosenWordString = chooseRandomFromList(words)
+chooseRandomFromList(words)
 print("\nWelcome to Hangman!")
 setTemporaryUnderScoresArray()
 
