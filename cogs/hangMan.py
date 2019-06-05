@@ -7,7 +7,6 @@ class hangMan(commands.Cog):
         self.client = client
 
 
-
     @commands.command(aliases = ["hangman", "Hangman", "HangMan"])
     async def hangMan(self, ctx):
 
@@ -21,10 +20,12 @@ class hangMan(commands.Cog):
         gameRunning = True
         input = 'a'
         guessedLetters = []
-
+        correctIncorrectString = ""
+        guessesRemainingString = ""
+        stringVal = ""
 
         def check(m):
-                return m.author ==  author
+                return m.author == author
 
         def chooseWord():
             nonlocal chosenWord
@@ -39,15 +40,27 @@ class hangMan(commands.Cog):
 
         chooseWord()
         setGameUnderscores()
-    #    await ctx.send(chosenWord)
-        await ctx.send("Welcome to hangman")
+        #await ctx.send(chosenWord)
+        #await ctx.send("Welcome to hangman")
+
+        gameEmbed = discord.Embed(title = "Welcome to Hangman!", color = 0x008200)
+        gameEmbed.set_author(name = ctx.author)
+        gameEmbed.add_field(name = "Word progress", value = f"{tempUnderscoreArray}", inline = False)
+        gameEmbed.add_field(name = "\u200b", value = f"{correctIncorrectString}\n{guessesRemainingString}", inline = False)
+        #gameEmbed.add_field(name = "a", value = "a", inline = False)
+        #embed.add_field(name = "Guessed Letters:", value=_ _ _ _ _ _ _ , inline=False)
+        gameEmbed.add_field(name = "\u200b", value = "Enter a Letter:")
+        #await ctx.send(embed = gameEmbed)
+
+
 
         while gameRunning == True:
-            await ctx.send(tempUnderscoreArray) #Print the array that shows guessed letters
-            await ctx.send("Take a guess: \n")
+            #await ctx.send(tempUnderscoreArray) #Print the array that shows guessed letters
+            #await ctx.send("Take a guess: \n")
+            await ctx.send(embed = gameEmbed)
             input = await self.client.wait_for('message') #wait for the person who started it to guess a letter
             guessedChar = input.content
-
+            stringVal = ""
 
             for a in range(0, len(chosenWord)): #if the word contains the guessed character replace the underscores
                 if chosenWord[a] == guessedChar:
@@ -55,16 +68,28 @@ class hangMan(commands.Cog):
                     tempUnderscoreArray.insert(a, guessedChar)
                     wordContainsChar = True
 
-            if wordContainsChar: #check to see if the word has the guesses character in it or not
-                await ctx.send(f"The word does have a(n) {guessedChar} in it!\n")
-                await ctx.send(f"You have {guessesLeft} guesses left")
+            if wordContainsChar: #test if the word has the guesses character in it or not
+                correctIncorrectString = f"The word does have a(n) {guessedChar} in it!\n"
+                guessesRemainingString = f"You have {guessesLeft} guesses left\n"
+                stringVal = f"{correctIncorrectString}\n{guessesRemainingString}"
+                gameEmbed.set_field_at(index = 2, name = "\u200b", value = stringVal)
+                #await ctx.send(f"The word does have a(n) {guessedChar} in it!\n")
+                    #gameEmbed.set_field_at(index = 3, value = f"You have {guessesLeft} guesses left")
+                #await ctx.send(f"You have {guessesLeft} guesses left")
             else:
                 guessesLeft = guessesLeft - 1
-                await ctx.send(f"Sorry, the word does not contain {guessedChar}")
-                await ctx.send(f"You have {guessesLeft} guesses left")
+                correctIncorrectString = f"Sorry, the word does not contain {guessedChar}\n"
+                guessesRemainingString = f"You have {guessesLeft} guesses left\n"
+                stringVal = f"{correctIncorrectString}{guessesRemainingString}"
+                gameEmbed.set_field_at(index = 2, name = '\u200b', value = stringVal)
+                #await ctx.send(f"Sorry, the word does not contain {guessedChar}")
+                #gameEmbed.set_field_at(index = 3, value = f"You have {guessesLeft} guesses left")
+                #await ctx.send(f"You have {guessesLeft} guesses left")
 
-            if guessesLeft == 0: #check to see if all guesses have been used
-                await ctx.send(f"You have used all of your guesses. The correct word was {chosenWord}")
+
+            if guessesLeft == 0: #test if all guesses have been used
+                stringVal = f"{correctIncorrectString}\n{guessesRemainingString}You have used all of your guesses. The correct word was {chosenWord}"
+                gameEmbed.set_field_at(index = 2, name = '\u200b', value = stringVal)
                 gameRunning = False
                 break
 
@@ -75,7 +100,7 @@ class hangMan(commands.Cog):
                     wordsMatch = False
                     break
 
-            if wordsMatch == True:
+            if wordsMatch == True: #test if the guessed word matches the chosen word
                 await ctx.send("\nGood job! You guessed the word correctly!")
                 await ctx.send(tempUnderscoreArray)
                 break

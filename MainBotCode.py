@@ -52,13 +52,13 @@ async def toggleReverseWords(ctx):
 async def ping(ctx):
     await ctx.send(f"Pong! {round(client.latency * 1000)}ms")
 
-@client.command()
+@client.command(Aliases = ['help', 'Help'])
 async def helpMe(ctx):
-    embed = discord.Embed(title = "chatBot help", description = "Some useful commands")
+    embed = discord.Embed(title = "Philip help", description = "Some useful commands")
     embed.add_field(name = "!reverse", value = "Toggles word reversal")
     embed.add_field(name = "!ping", value = "Returns the bot's ping")
-    embed.add_field(name = "!joke", value = "tells a joke")
-    embed.add_field(name = "!hangman", value = "plays hangman")
+    embed.add_field(name = "!joke", value = "Tells a joke")
+    embed.add_field(name = "!hangman", value = "Plays hangman")
     await ctx.send(embed = embed)
 
 @client.command(aliases = ["joke", "telljoke"])
@@ -71,6 +71,7 @@ async def tellJoke(ctx):
     "How long is a chinese man's name",
     "What do you get when you cross an insomniac, a dislexic, and an agnostic?",
     "Where does the general keep his armies?"]
+    #7 jokes
 
     jokeAnswer = [
     "B",
@@ -79,7 +80,8 @@ async def tellJoke(ctx):
     "make bb's",
     "no, really, it is.",
     "Someone who lays awake at night wondering of there's a dog",
-    "In his slee"]
+    "In his sleevies"]
+    #7 answers
 
     jokeNumber = random.randint(0, len(jokeQuestion) - 1)
     await ctx.send(jokeQuestion[jokeNumber])
