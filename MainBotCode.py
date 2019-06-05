@@ -87,6 +87,12 @@ async def tellJoke(ctx):
     await ctx.send(jokeQuestion[jokeNumber])
     await ctx.send(jokeAnswer[jokeNumber])
 
+@client.command()
+async def clear(ctx, amount = 0):
+    global valid_users
+    if str(ctx.author) in valid_users:
+        await ctx.channel.purge(limit = amount + 1)
+
 
 client.load_extension("cogs.hangMan")
 client.run('***REMOVED***')
