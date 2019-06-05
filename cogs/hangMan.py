@@ -5,11 +5,18 @@ import random
 class hangMan(commands.Cog):
     def __init__(self, client):
         self.client = client
+        self.cheatMode = False
 
+    @commands.command(aliases = ["cheatman", "cheatMan", "enableCheats", "cheatmode"])
+    async def turnOnCheats(self, ctx):
+        self.cheatMode = not self.cheatMode
+        if self.cheatMode:
+            await ctx.send("Turning on cheatMode for hangMan")
+        else:
+            await ctx.send("turning off cheatMode for hangMan")
 
-    @commands.command(aliases = ["hangman", "Hangman", "HangMan"])
-    async def hangMan(self, ctx):
-
+    @commands.command()
+    async def hangman(self, ctx):
         author = ctx.author
         wordContainsChar = False
         wordList = ["banana", "choclolate", "coffee", "pancakes", "oranges", "waffles", "omelettes", "sandwich", "linguini", "alfredo", "burrito", "quesadilla", "apple", "grapefruit", "avocado", "coconut"]
@@ -20,9 +27,10 @@ class hangMan(commands.Cog):
         gameRunning = True
         input = 'a'
         guessedLetters = []
-        correctIncorrectString = ""
-        guessesRemainingString = ""
-        stringVal = ""
+        correctIncorrectString = "No letters guessed yet."
+        guessesRemainingString = "You have 7 guesses remaining"
+        stringVal = "a"
+        letterIsLegal = False
 
         def check(m):
                 return m.author == author
@@ -43,22 +51,27 @@ class hangMan(commands.Cog):
         #await ctx.send(chosenWord)
         #await ctx.send("Welcome to hangman")
 
-        gameEmbed = discord.Embed(title = "Welcome to Hangman!", color = 0x008200)
-        gameEmbed.set_author(name = ctx.author)
-        gameEmbed.add_field(name = "Word progress", value = f"{tempUnderscoreArray}", inline = False)
-        gameEmbed.add_field(name = "\u200b", value = f"{correctIncorrectString}\n{guessesRemainingString}", inline = False)
-        #gameEmbed.add_field(name = "a", value = "a", inline = False)
-        #embed.add_field(name = "Guessed Letters:", value=_ _ _ _ _ _ _ , inline=False)
-        gameEmbed.add_field(name = "\u200b", value = "Enter a Letter:")
-        #await ctx.send(embed = gameEmbed)
+        gameEmbedOne = discord.Embed(title = "Welcome to Hangman!", color = 0x008200)
+        gameEmbedOne.set_author(name = ctx.author)
+        gameEmbedOne.add_field(name = "Word progress", value = f"{tempUnderscoreArray}", inline = False)
+        gameEmbedOne.add_field(name = 'Information', value = f"{correctIncorrectString}\n{guessesRemainingString}", inline = False)
+        gameEmbedOne.add_field(name = "\u200b", value = "Enter a Letter:")
 
-
+        if self.cheatMode:
+            await ctx.send(wordList)
 
         while gameRunning == True:
             #await ctx.send(tempUnderscoreArray) #Print the array that shows guessed letters
             #await ctx.send("Take a guess: \n")
-            await ctx.send(embed = gameEmbed)
+            await ctx.send(embed = gameEmbedOne)
+
             input = await self.client.wait_for('message') #wait for the person who started it to guess a letter
+
+            if input.content == "quitgame":
+                await ctx.send("ending the game")
+                gameRunning = False
+                break
+
             guessedChar = input.content
             stringVal = ""
 
@@ -67,29 +80,24 @@ class hangMan(commands.Cog):
                     tempUnderscoreArray.pop(a)
                     tempUnderscoreArray.insert(a, guessedChar)
                     wordContainsChar = True
+                    gameEmbedOne.set_field_at(index = 0, name = "word progress", value = f"{tempUnderscoreArray}", inline = False)
 
             if wordContainsChar: #test if the word has the guesses character in it or not
-                correctIncorrectString = f"The word does have a(n) {guessedChar} in it!\n"
-                guessesRemainingString = f"You have {guessesLeft} guesses left\n"
+                correctIncorrectString = f"The word does have a(n) {guessedChar} in it!"
+                guessesRemainingString = f"You have {guessesLeft} guesses left"
                 stringVal = f"{correctIncorrectString}\n{guessesRemainingString}"
-                gameEmbed.set_field_at(index = 2, name = "\u200b", value = stringVal)
-                #await ctx.send(f"The word does have a(n) {guessedChar} in it!\n")
-                    #gameEmbed.set_field_at(index = 3, value = f"You have {guessesLeft} guesses left")
-                #await ctx.send(f"You have {guessesLeft} guesses left")
+                gameEmbedOne.set_field_at(index = 1, name = "Information", value = stringVal, inline = False)
             else:
                 guessesLeft = guessesLeft - 1
-                correctIncorrectString = f"Sorry, the word does not contain {guessedChar}\n"
-                guessesRemainingString = f"You have {guessesLeft} guesses left\n"
-                stringVal = f"{correctIncorrectString}{guessesRemainingString}"
-                gameEmbed.set_field_at(index = 2, name = '\u200b', value = stringVal)
-                #await ctx.send(f"Sorry, the word does not contain {guessedChar}")
-                #gameEmbed.set_field_at(index = 3, value = f"You have {guessesLeft} guesses left")
-                #await ctx.send(f"You have {guessesLeft} guesses left")
+                correctIncorrectString = f"Sorry, the word does not contain {guessedChar}"
+                guessesRemainingString = f"You have {guessesLeft} guesses left"
+                stringVal = f"{correctIncorrectString}\n{guessesRemainingString}"
+                gameEmbedOne.set_field_at(index = 1, name = "Information", value = stringVal, inline = False)
 
 
             if guessesLeft == 0: #test if all guesses have been used
-                stringVal = f"{correctIncorrectString}\n{guessesRemainingString}You have used all of your guesses. The correct word was {chosenWord}"
-                gameEmbed.set_field_at(index = 2, name = '\u200b', value = stringVal)
+                stringVal = f"{correctIncorrectString}\n{guessesRemainingString}\nYou have used all of your guesses. The correct word was {chosenWord}"
+                gameEmbedOne.set_field_at(index = 1, name = "Information", value = stringVal, inline = False)
                 gameRunning = False
                 break
 
@@ -101,12 +109,15 @@ class hangMan(commands.Cog):
                     break
 
             if wordsMatch == True: #test if the guessed word matches the chosen word
-                await ctx.send("\nGood job! You guessed the word correctly!")
-                await ctx.send(tempUnderscoreArray)
+                await ctx.channel.purge(limit = 2)
+                await ctx.send(f"Good job! You guessed the word correctly! with {guessesLeft} guesses remaining.")
+                await ctx.send(chosenWord)
+                gameRunning = False
                 break
 
             wordContainsChar = False
             guessedLetters.append(guessedChar) #add the guessed character to the list
+            await ctx.channel.purge(limit = 2)
 
 def setup(client):
     client.add_cog(hangMan(client))
