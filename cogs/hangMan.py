@@ -18,7 +18,7 @@ class hangMan(commands.Cog):
     @commands.command()
     async def hangman(self, ctx):
         wordContainsChar = False
-        wordList = ["banana", "choclolate", "coffee", "pancakes", "oranges", "waffles", "omelettes", "sandwich", "linguini", "alfredo", "burrito", "quesadilla", "apple", "grapefruit", "avocado", "coconut", "hamburger", "peanuts"]
+        wordList = ["banana", "choclolate", "coffee", "pancake", "orange", "waffle", "omelette", "sandwich", "linguini", "alfredo", "burrito", "quesadilla", "apple", "grapefruit", "avocado", "coconut", "hamburger", "peanuts", "honey"]
         guessedChar = 'a'
         tempUnderscoreArray = []
         guessesLeft = 7
@@ -26,10 +26,6 @@ class hangMan(commands.Cog):
         gameRunning = True
         input = 'a'
         guessedLetters = []
-        correctIncorrectString = "No letters guessed yet."
-        guessesRemainingString = "You have 7 guesses remaining"
-        stringVal = "a"
-        letterIsLegal = False
 
         def check(m):
                 return m.author == ctx.author and m.channel == ctx.channel
@@ -54,25 +50,21 @@ class hangMan(commands.Cog):
         gameEmbedOne.set_author(name = ctx.author)
         gameEmbedOne.add_field(name = "Word progress", value = f"{tempUnderscoreArray}", inline = False)
         gameEmbedOne.add_field(name = 'Information', value = f"No letters guessed yet.\nYou have 7 guesses remaining.", inline = False)
-        gameEmbedOne.add_field(name = "\u200b", value = "Enter a Letter:")
+        gameEmbedOne.add_field(name = "\u200b", value = "Enter a letter:")
 
         if self.cheatMode:
             await ctx.send(wordList)
 
         while gameRunning == True:
-            #await ctx.send(tempUnderscoreArray) #Print the array that shows guessed letters
-            #await ctx.send("Take a guess: \n")
             await ctx.send(embed = gameEmbedOne)
+            input = await self.client.wait_for('message', check = check) #wait for the person who started it to guess a letter
 
-            input = await self.client.wait_for('message', check = check, timeout = 30.0) #wait for the person who started it to guess a letter
-
-            if input.content == "quitgame":
+            if input.content == "quitgame": #quit if the keyword is entered
                 await ctx.send("ending the game.")
                 gameRunning = False
                 break
 
             guessedChar = input.content
-            stringVal = ""
 
             for a in range(0, len(chosenWord)): #if the word contains the guessed character replace the underscores
                 if chosenWord[a] == guessedChar:
@@ -109,7 +101,8 @@ class hangMan(commands.Cog):
 
             wordContainsChar = False
             guessedLetters.append(guessedChar) #add the guessed character to the list
-            await ctx.channel.purge(limit = 2)
+            gameEmbedOne.set_field_at(index = 2, name = f"guessed letters: {', '.join(guessedLetters)}", value = "Enter a letter:")
+            await ctx.channel.purge(limit = 2) #delete the last embed and quess
 
 def setup(client):
     client.add_cog(hangMan(client))
