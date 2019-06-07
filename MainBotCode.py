@@ -54,34 +54,46 @@ async def ping(ctx):
 
 @client.command(Aliases = ['help', 'Help'])
 async def helpMe(ctx):
-    embed = discord.Embed(title = "Philip help", description = "Some useful commands")
-    embed.add_field(name = "!reverse", value = "Toggles word reversal")
-    embed.add_field(name = "!ping", value = "Returns the bot's ping")
-    embed.add_field(name = "!joke", value = "Tells a joke")
-    embed.add_field(name = "!hangman", value = "Plays hangman")
-    await ctx.send(embed = embed)
+    helpEmbed = discord.Embed(title = "Philip help", description = "Some useful commands")
+    helpEmbed.add_field(name = "!reverse", value = "Toggles word reversal")
+    helpEmbed.add_field(name = "!ping", value = "Returns the bot's ping")
+    helpEmbed.add_field(name = "!joke", value = "Tells a joke")
+    helpEmbed.add_field(name = "!hangman", value = "Plays hangman")
+    helpEmbed.add_field(name = "!clear (num)", value = "deletes a certain number of messages")
+    await ctx.send(embed = helpEmbed)
 
 @client.command(aliases = ["joke", "telljoke"])
 async def tellJoke(ctx):
     jokeQuestion = [
     "What do you call bears without ears?",
     "Why don't blind people skydive?",
-    "As a scarecrow people say I'm outstanding at my job",
+    "As a scarecrow people say I'm outstanding at my job.",
     "What do cannonballs do when they're in love?",
-    "How long is a chinese man's name",
+    "How long is a chinese man's name.",
     "What do you get when you cross an insomniac, a dislexic, and an agnostic?",
-    "Where does the general keep his armies?"]
-    #7 jokes
+    "Where does the general keep his armies?",
+    "What do you call an Argentinian with a rubber toe?",
+    "What do you call a sketchy Italian neighborhood?",
+    "Why can't you hear a pterodactyl go to the bathroom?",
+    "Why do you never see elephants hiding in trees?",
+    "I told my girlfriend she drew her eyebrows too high.",
+    "Where can you find a cow with no legs?"]
+    #13 jokes
 
     jokeAnswer = [
     "B",
     "It scares the hell out of their dogs",
-    "but hay, its in my jeans",
-    "make bb's",
-    "no, really, it is.",
+    "But hay, its in my jeans",
+    "Make bb's",
+    "No, really, it is",
     "Someone who lays awake at night wondering of there's a dog",
-    "In his sleevies"]
-    #7 answers
+    "In his sleevies",
+    "Roberto",
+    "The Spaghetto",
+    "Because the pee is silent",
+    "Because they're so good at it",
+    "She seemed surprised",
+    "Right where you left it"]
 
     jokeNumber = random.randint(0, len(jokeQuestion) - 1)
     await ctx.send(jokeQuestion[jokeNumber])
