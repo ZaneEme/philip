@@ -5,7 +5,6 @@ import os
 
 client = commands.Bot(command_prefix = '!', help_command = None)
 reverseWords = False
-valid_users = ['Zane#9722', 'Phililiser#9239'] #users with admin priveleges
 
 @client.event
 async def on_ready():
@@ -33,8 +32,8 @@ async def on_message(message): #when the bot starts
 
 @client.command(aliases = ["quit", "quitbot", "q"])
 async def quitBot(ctx): #quit the bot
-    global valid_users
-    if str(ctx.author) in valid_users:
+    admin_role = discord.utils.get(ctx.guild.roles, name = "Admin") #create the role of admin
+    if admin_role in ctx.author.roles:
         await ctx.send("quitting the bot")
         await client.change_presence(status = discord.Status.offline)
         quit()
@@ -101,8 +100,8 @@ async def tellJoke(ctx):
 
 @client.command()
 async def clear(ctx, amount = 0):
-    global valid_users
-    if str(ctx.author) in valid_users:
+    admin_role = discord.utils.get(ctx.guild.roles, name = "Admin") #create an admin role
+    if admin_role in ctx.author.roles:
         await ctx.channel.purge(limit = amount + 1)
 
 
