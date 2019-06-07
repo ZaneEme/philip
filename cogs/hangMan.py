@@ -23,12 +23,15 @@ class hangMan(commands.Cog):
     @commands.command()
     async def hangman(self, ctx):
         wordContainsChar = False
-        wordList = ["banana", "choclolate", "coffee", "pancake", "orange", "waffle", "omelette", "sandwich", "linguini", "alfredo", "burrito",
-                    "quesadilla", "apple", "grapefruit", "avocado", "coconut", "hamburger", "peanuts", "honey", "pudding"]
+        wordList = ["banana", "choclolate", "coffee", "pancake", "orange", "waffle", "omelette", "sandwich", "linguini", "alfredo",
+                    "burrito", "quesadilla", "apple", "grapefruit", "avocado", "coconut", "hamburger", "peanut", "honey", "pudding",
+                    "icecream", "broccoli", "watermelon", "burrito", "cheeseburger", "sushimi", "noodles", "barbecue", "macaroni", "sirloin",
+                    "wonton", "lemonade", "zucchini", "blueberry", "raspberry", "boisenberry", "lobster", "peanutbutter", "spaghetti", "lasagna",
+                    "breadsticks", "casserole", "gingerbread", "tamale", "cupcake", "stuffing", "ravioli", "meatballs", "croissant", "milkshake"]
 
         game_thumbnails = ["https://i.imgur.com/44Jb4k2.png", "https://i.imgur.com/gXczhhM.png", "https://i.imgur.com/OHkzTXu.png", "https://i.imgur.com/1cgkwRQ.png",
                         "https://i.imgur.com/ntOTFmt.png", "https://i.imgur.com/GwmPeX7.png", "https://i.imgur.com/jy490gk.png", "https://i.imgur.com/TR4gWeH.png"]
-                        
+
         guessedChar = 'a'
         tempUnderscoreArray = []
         guessesLeft = 7
