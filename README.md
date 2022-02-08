@@ -13,7 +13,7 @@ Philip can perform many functions including:
 * interactive Hangman
 
 ### Setup:
-* Rename the `config.example.json` to `config.json` and replace **~Your Key Here~** 
+* Rename the `config.example.json` to `config.json` and replace **\~Your Key Here\~** 
   with your [Discord API Key](https://discordpy.readthedocs.io/en/stable/discord.html)
 * Run the ```MainBotCode.py```
 
